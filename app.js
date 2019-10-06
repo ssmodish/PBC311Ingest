@@ -9,5 +9,18 @@ axios
       password: process.env.TWILIO_AUTH_TOKEN
     }
   })
-  .then(response => response.data.messages.map(message => console.log(message)))
+  .then(response =>
+    response.data.messages.map(message => {
+      if (message.direction === 'inbound') {
+        console.log('----------');
+        console.log('From: ', message.from);
+
+        if (message.body) {
+          console.log(message.body);
+        } else {
+          console.log('This is a message with an image');
+        }
+      }
+    })
+  )
   .catch(error => console.error(error));
